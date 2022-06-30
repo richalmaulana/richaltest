@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+
+
+{% block content %}
+
+
+<section class="content-wrapper">
+  <div class="content-header">
+    <div class="container">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h4 class="m-0"> List Pengajuan Sewa </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="container">
+      <div class="col-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h5 class="card-title m-0">List Detail Pengajuan Sewa</h5>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-striped" id="table-1">
+                <thead>
+                  <tr>
+                    
+                    <th>No.</th>
+                    <th>No ID Sewa</th>
+                    <th>No Custumer</th>
+                    <th>Judul Film</th>
+                    <th>Tanggal Sewa</th>
+                    <th>Status Sewa</th>
+                    <th>Proses</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for a in dataListSewa %}
+                  <tr>
+                    <td>{{loop.index}}</td>
+                    <td>{{ a.sewa_id }}</td>
+                    <td>{{ a.sewa_id_user }}</td>
+                    <td>{{ a.dtl_judul_film }}</td>
+                    <td>{{ a.sewa_tgl_buat }}</td>
+                    <td>{{ a.sewa_status }}</td>
+                    <td>
+                      <input type = "hidden" class = "hidnosewa" value = "{{ a.sewa_id }}" /> 
+                      <a href="javascript:void(0)" title="Lihat Detail" onclick="showDetail(this)">
+                      <i class="btn btn-success btn-xs">Detail</i>
+                      </a>  
+                    </td>
+                                     
+                  </tr>
+
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</section>
+
+<script type="text/javascript">
+
+  function showDetail(obj)
+  {
+      let no_sewa = $(obj).siblings('.hidnosewa').val();
+      location = '/approval/detail_approval?n='+no_sewa;
+  }
+  
+  
+</script> 
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='assets/js/stisla.js')}}"></script>
+
+<!-- Template JS File -->
+<script src="{{ url_for('static', filename='assets/js/scripts.js')}}"></script>
+<script src="{{ url_for('static', filename='assets/js/custom.js')}}"></script>
+
+<!-- Page Specific JS File -->
+<script src="{{ url_for('static', filename='assets/js/page/modules-datatables.js')}}"></script>
+
+
+{% endblock content %}

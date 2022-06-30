@@ -1,0 +1,245 @@
+{% extends "base.html" %}
+{% block head %}
+  {{ super() }}
+
+<style type="text/css">
+.important { color: #336699; }
+
+.warning {
+  background-color: #ffffcc;
+  border-left: 6px solid #ffeb3b;
+} 
+
+#table-scroll {
+  height:550px;
+  overflow:auto;
+
+}
+
+
+</style>
+
+
+{% endblock %}
+
+{% block content %}
+<section class="content-wrapper" >
+  <div class="content-header">
+    <div class="container">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h4 class="m-0"> Proses Pengembalian Sewa DVD</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="container">
+      <div class="col-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h5 class="card-title m-0">Detail Sewa</h5>
+          </div>
+        <div class="card-body">
+
+            <div class="card-body">
+              <div class="row">
+                <div class="col-12 col-md-6 col-lg-6">
+                 
+                  <div class="form-group row">
+                    <label for="inputBranch" class="col-sm-3 col-form-label">No iD Sewa</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="sewa_id" name="sewa_id" value="{{dataDetailSewa[0]['sewa_id']}}" readonly>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="inputNIK" class="col-sm-3 col-form-label">User ID</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" value="{{dataDetailSewa[0]['sewa_id_user']}}" readonly>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="inputNIK" class="col-sm-3 col-form-label">No ID Film</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" value="{{dataDetailSewa[0]['sewa_id_dvd']}}" name="sewa_id_dvd" id="sewa_id_dvd" readonly>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="inputNIK" class="col-sm-3 col-form-label">Judul Film</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" value="{{dataDetailSewa[0]['dtl_judul_film']}}" readonly>
+                    </div>
+                  </div>
+
+
+                </div>
+
+
+                <div class="col-12 col-md-6 col-lg-6">
+
+
+                  <div class="form-group row">
+                    <label for="inputPeriode" class="col-sm-3 col-form-label">Tanggal Sewa</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" value="{{dataDetailSewa[0]['sewa_tgl_buat']}}" readonly>
+
+                    </div>
+                  </div>
+
+                  <!-- div class="form-group row">
+                    <label for="inputPeriode" class="col-sm-3 col-form-label">Bukti File Pembayaran</label>
+                    <div class="col-sm-9">
+                      <a class="btn btn-primary btn-sm"  href="{{url_for('get_file', filename=dataDetailSewa[0]['sewa_file'])}}" target="_blank">Lihat</a>
+
+                    </div>
+                  </div> -->
+
+                  
+                  <div class="form-group row">
+                    <label for="inputPeriode" class="col-sm-3 col-form-label">Rating</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="rating" name="rating" oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="inputPeriode" class="col-sm-3 col-form-label">Feedbcak</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="feedback" name="feedback">
+
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
+            </div>
+
+            {% if (dataDetailSewa[0]['sewa_status'] == 'DELIV' ) %}
+            <div class="card">
+              <div class="card-header">
+                <label>Apakah Ingin Melakukan Pengembalian Sewa Ini ?</label>
+              </div>
+
+              <div class="card-footer">
+                    
+                    <button type="button" class="btn btn-success" style="float: right;" onclick="simpan();">Simpan</button>
+                  
+              </div>
+
+            </div>
+            {% endif %}
+
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<div class="modal fade" id="modal-success" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-success">
+        <h4 class="modal-title">Response</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBodySuccess">
+        <p id="content-success"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btn-close-success" class="btn btn-outline-success" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="modal-danger" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h4 class="modal-title">Peringatan</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBodyDanger">
+        <p id="content-danger"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btn-close-danger" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<script type="text/javascript">
+
+  function alertSuccess(pesan){
+    $("#modalBodySuccess #content-success").html(pesan);
+    $('#modal-success').modal('show');
+  }
+
+  function alertWarning(pesan){
+    $("#modalBodyDanger #content-danger").html(pesan);
+    $('#modal-danger').modal('show');
+  }
+
+
+function simpan(){
+
+  $.ajax({
+      type: 'POST',
+      url: "{{ url_for('history.pengembalian') }}",
+      data: {
+              'sewa_id' : $('#sewa_id').val(),
+              'feedback' : $('#feedback').val(),
+              'rating' : $('#rating').val(),
+              'sewa_id_dvd' : $('#sewa_id_dvd').val()
+          },
+      dataType: 'json',
+      success: function(data) {
+          if (data.status == "T") {
+            // document.location.reload();
+            // alert('Sukses Simpan');
+            alertSuccess(data.message);
+            $("#btn-close-success").on("click", function(){
+              document.location.reload();
+            });
+            
+
+          }else{
+            // document.location.reload();
+            // alert('Gagal Simpan');
+            alertWarning(data.message);
+            $("#btn-close-danger").on("click", function(){
+              document.location.reload();
+            });
+            // document.location.reload();
+          }
+      },
+      error: function (e) {
+          document.location.reload();
+          alert('Internal server eror');
+      }
+  });
+}
+
+</script>
+
+
+
+
+{% endblock content %}

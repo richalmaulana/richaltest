@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block head %}
+  {{ super() }}
+  <style>
+  .inner-icon{position: relative;}
+  .icon-bg{position: absolute;
+  bottom:5px;
+  right:15px;
+  font-size:64px;
+  opacity: 25%;}
+  .icon-bg i{color: #000;}
+  .box-status{cursor: pointer}
+  .box-status:hover .icon-bg{opacity:50%;}
+  .box-status:hover .icon-bg i{color:#FFF;}
+
+
+</style>
+
+<script type="text/javascript">
+
+
+</script>
+{% endblock %}
+{% block content %}
+<section class="content-wrapper">
+  <div class="content-header">
+<div class="container">
+<div class="row mb-2">
+<div class="col-sm-6">
+<h4 class="m-0"> Selamat Datang <small>di Andrew DVD Rental Store Online</small> </h4>
+<a>{{current_user.nama }}</a>
+</div>
+
+
+
+</div>
+</div>
+</div>
+
+  <div class="content">
+  <div class="container">
+<div class="col-12">
+<div class="card card-primary card-outline">
+<div class="card-header">
+<h5 class="card-title m-0">Daftar Film Terbaru</h5>
+</div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-striped" id="table-1">
+        <thead>
+          <tr>
+                    
+            <th>No.</th>
+            <th>Judul Film </th>
+            <th>Category </th>
+            <th>Rating </th>
+            <th>Kualitas Gambar </th>
+            <th>Deskripsi Singkat </th>
+            <th>Stock DVD</th>
+            <th>Status Aktif</th>
+            <th>Proses</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in dataListKoleksiDVD %}
+          <tr>
+            <td>{{loop.index}}</td>
+            <td>{{ a.dtl_judul_film }}</td>
+            <td>{{ a.dtl_category }}</td>
+            <td>{{ a.dtl_rating }}</td>
+            <td>{{ a.dtl_kualitas }}</td>
+            <td>{{ a.dtl_descp }}</td>
+            <td>{{ a.dtl_stock }}</td>
+            <td>{{ a.dtl_status_aktif }}</td>
+            <td>
+              <input type = "hidden" class = "hid_id_dvd" value = "{{a.dtl_id_dvd}}" /> 
+              <a href="javascript:void(0)" title="Ajukan Sewa" onclick="sewa_film(this)">
+              <i class="btn btn-success btn-xs">Sewa</i>
+              </a>
+            </td>
+         
+                             
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+</div>
+</div>
+
+
+</section>
+
+<script type="text/javascript">
+
+  function sewa_film(obj)
+  {
+      let no_id = $(obj).siblings('.hid_id_dvd').val();
+      location = '/sewa?n='+no_id;
+  }
+
+</script> 
+{% endblock content %}

@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+{% block head %}
+  {{ super() }}
+
+<style type="text/css">
+.important { color: #336699; }
+
+.warning {
+  background-color: #ffffcc;
+  border-left: 6px solid #ffeb3b;
+} 
+
+#table-scroll {
+  height:550px;
+  overflow:auto;
+
+}
+
+
+</style>
+
+
+{% endblock %}
+
+{% block content %}
+<section class="content-wrapper" >
+  <div class="content-header">
+    <div class="container">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h4 class="m-0">Pengajuan Sewa Film</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="container">
+      <div class="col-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h5 class="card-title m-0">Detail Film</h5>
+          </div>
+        <div class="card-body">
+
+            <div class="card-body">
+              <div class="row">
+                <div class="col-12 col-md-6 col-lg-6">
+                 
+                  <div class="form-group row">
+                    <label for="inputBranch" class="col-sm-5 col-form-label">Judul Film</label>
+                    <div class="col-sm-7">
+                       <input type="text" class="form-control" id="no_id_film" name="no_id_film" value="{{dataDetailFilm[0]['dtl_id_dvd']}}" readonly>
+                      <input type="text" class="form-control" id="judul_film" name="judul_film" value="{{dataDetailFilm[0]['dtl_judul_film']}}" readonly >
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="inputJabatan" class="col-sm-5 col-form-label">Category</label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" id="category" name="category" value="{{dataDetailFilm[0]['dtl_category']}}" readonly>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="inputNIK" class="col-sm-5 col-form-label">Deskripsi Singkat</label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" id="descp" name="descp" value="{{dataDetailFilm[0]['dtl_descp']}}" readonly>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="inputNIK" class="col-sm-5 col-form-label">Rating</label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" id="rating" name="rating" value="{{dataDetailFilm[0]['dtl_rating']}}" readonly>
+                    </div>
+                  </div>
+
+                  
+
+                </div>
+
+
+                <div class="col-12 col-md-6 col-lg-6">
+
+                  <div class="form-group row">
+                    <label for="inputNama" class="col-sm-5 col-form-label">Kualitas Gambar</label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" id="kualitas" name="kualitas" value="{{dataDetailFilm[0]['dtl_kualitas']}}" readonly>
+                    </div>
+                  </div>
+                 
+                  <div class="form-group row">
+                    <label for="inputFaktur" class="col-sm-5 col-form-label">Stock</label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" value="{{dataDetailFilm[0]['dtl_stock']}}"  id="stock" name="stock" readonly>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="file_upload" class="col-sm-5 col-form-label">Upload File</label>
+                    <div class="col-sm-7">
+                        <input type="file" id="file_upload" name="file_upload" onchange="ValidateSingleInput(this);"  required >
+                    </div>
+
+                    <div class="warning">
+                    <p><strong>Note. </strong>Silahkan upload file bukti pembayaran untuk melakukan proses pengajuan Sewa</p>
+                    </div>
+                  </div>
+                  
+                  
+
+
+               
+
+                </div>
+              </div>
+            </div>
+
+      
+
+            {% if(dataDetailFilm[0]['dtl_stock'] != '0') %}
+            <div class="card">
+
+              <div class="card-footer">
+                    
+                    <button type="button" class="btn btn-success" style="float: right;" onclick="simpan(this);" >Simpan</button>
+                    <!-- onclick="simpan();" -->
+                
+              </div>
+
+            </div>
+            {% endif %}
+
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<div class="modal fade" id="modal-success" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-success">
+        <h4 class="modal-title">Update Data</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBodySuccess">
+        <p id="content-success"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btn-close-success" class="btn btn-outline-success" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="modal-danger" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h4 class="modal-title">Peringatan</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBodyDanger">
+        <p id="content-danger"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btn-close-danger" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<script type="text/javascript">
+
+var _validFileExtensions = [".pdf", ".jpg", ".png", ".PDF", ".JPG"];    
+function ValidateSingleInput(oInput) {
+  if (oInput.type == "file") {
+      var sFileName = oInput.value;
+       if (sFileName.length > 0) {
+          var blnValid = false;
+          for (var j = 0; j < _validFileExtensions.length; j++) {
+              var sCurExtension = _validFileExtensions[j];
+              if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+                  blnValid = true;
+                  break;
+              }
+          }
+           
+          if (!blnValid) {
+              alert("Jenis file yang dapat di upload " + _validFileExtensions.join(", "));
+              oInput.value = "";
+              return false;
+          }
+      }
+  }
+  return true;
+}
+
+function alertSuccess(pesan){
+    $("#modalBodySuccess #content-success").html(pesan);
+    $('#modal-success').modal('show');
+  }
+
+function alertWarning(pesan){
+    $("#modalBodyDanger #content-danger").html(pesan);
+    $('#modal-danger').modal('show');
+  }
+
+function simpan(obj){
+  var form_data = new FormData();
+  file = $('#file_upload').prop('files')[0];
+
+  form_data.append("file_upload", file);
+  form_data.append("no_id_film", $('#no_id_film').val());
+
+  $.ajax({
+      cache: false,
+      contentType: false,
+      processData: false,
+      type: 'POST',
+      url: "{{ url_for('proses_pengajuan_sewa') }}",
+      data: form_data,
+      dataType: 'json',
+      success: function(data) {
+          if (data.status == "T") {
+            alertSuccess(data.message);
+            $("#btn-close-success").on("click", function(){
+              document.location.reload();
+            });
+            
+
+          }else{
+            alertWarning(data.message);
+            $("#btn-close-danger").on("click", function(){
+              document.location.reload();
+            });
+          }
+      },
+      error: function (e) {
+          document.location.reload();
+          alert('Internal server eror');
+      }
+  });
+}
+
+
+
+</script>
+
+
+
+
+{% endblock content %}

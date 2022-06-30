@@ -1,0 +1,165 @@
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Andrew DVD Rental Store Online</title>
+
+<link rel="icon" type="image/gif" href="{{ url_for('static', filename='assets/logo.png') }}"/> 
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='plugins/fontawesome-free/css/all.min.css') }}">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='dist/css/adminlte.min.css') }}">
+
+</head>
+<body class="login-page" style="min-height: 496.781px;">
+    <div class="login-box">
+
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">Daftar DVD Rental Store Online</p>
+            <!-- <form method="POST" action="/signup" class="needs-validation" novalidate=""> -->
+                
+                <div class="input-group mb-3">
+                    <input type="text" id="kta" name="kta" class="form-control" value="{{no_kta}}" readonly>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" id="nama" name="nama" class="form-control" placeholder="Nama">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-file"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password"  id="pin" name="pin" class="form-control"  oninput="this.value=this.value.replace(/[^0-9]/g,'');" placeholder="PIN" maxlength="10">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <!-- <button type="button" class="btn btn-primary" style="float: left;" href="/sign_up">Sign Up</button> -->
+                        <a href="/login" class="btn btn-primary"><span>Sign In</span></a>
+                    </div>
+                    <div class="col-6">
+                        <button type="submit" class="btn btn-success" style="float: right;" onclick="simpan_user();">Daftar</button>
+                    </div>
+                </div>
+            <!-- </form> -->
+
+            </div>
+
+        </div>
+    </div>
+</body>
+
+<div class="modal fade" id="modal-success" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-success">
+        <h4 class="modal-title">Daftar User</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBodySuccess">
+        <p id="content-success"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btn-close-success" class="btn btn-outline-success" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="modal-danger" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h4 class="modal-title">Peringatan</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBodyDanger">
+        <p id="content-danger"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btn-close-danger" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<script type="text/javascript">
+
+function alertSuccess(pesan){
+    $("#modalBodySuccess #content-success").html(pesan);
+    $('#modal-success').modal('show');
+}
+
+function alertWarning(pesan){
+    $("#modalBodyDanger #content-danger").html(pesan);
+    $('#modal-danger').modal('show');
+}
+
+function simpan_user(){
+  
+$.ajax({
+  type: 'POST',
+  url: "{{ url_for('proses_simpan_user') }}",
+  data: {
+          'kta' : $('#kta').val(),
+          'nama' : $('#nama').val(),
+          'pin': $('#pin').val()
+      },
+  dataType: 'json',
+  success: function(data) {
+      if (data.status == "T") {
+        // document.location.reload();
+        // alert('Sukses Simpan');
+        alertSuccess(data.message);
+        $("#btn-close-success").on("click", function(){
+          document.location.reload();
+          })
+        
+
+      }else{
+        // document.location.reload();
+        // alert('Gagal Simpan');
+        alertWarning(data.message);
+        $("#btn-close-danger").on("click", function(){
+          document.location.reload();
+        });
+        // document.location.reload();
+      }
+  },
+  error: function (e) {
+      document.location.reload();
+      alert('Internal server eror');
+  }
+});
+}
+</script>
+
+<script src="{{ url_for('static', filename='plugins/jquery/jquery.min.js') }}"></script>
+
+<script src="{{ url_for('static', filename='plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+
+<script src="{{ url_for('static', filename='dist/js/adminlte.min.js?v=3.2.0')}}"></script>
+
+</html>

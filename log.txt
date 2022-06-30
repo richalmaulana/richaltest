@@ -1,0 +1,12 @@
+nohup: ignoring input
+[2021-10-29 17:00:41 +0700] [23979] [INFO] Starting gunicorn 20.1.0
+[2021-10-29 17:00:41 +0700] [23979] [INFO] Listening at: http://0.0.0.0:5029 (23979)
+[2021-10-29 17:00:41 +0700] [23979] [INFO] Using worker: sync
+[2021-10-29 17:00:41 +0700] [23982] [INFO] Booting worker with pid: 23982
+[2021-10-29 17:01:17 +0700] [23979] [CRITICAL] WORKER TIMEOUT (pid:23982)
+[2021-10-29 17:01:17 +0700] [23982] [INFO] Worker exiting (pid: 23982)
+[2021-10-29 17:01:18 +0700] [23985] [INFO] Booting worker with pid: 23985
+[2021-10-29 17:14:32 +0700] [23979] [INFO] Handling signal: hup
+[2021-10-29 17:14:32 +0700] [23979] [INFO] Hang up: Master
+[2021-10-29 17:14:32 +0700] [23979] [WARNING] Worker with pid 23985 was terminated due to signal 1
+[2021-10-29 17:14:32 +0700] [24131] [INFO] Booting worker with pid: 24131

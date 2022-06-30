@@ -1,0 +1,347 @@
+{% extends "base.html" %}
+{% block head %}
+  {{ super() }}
+
+
+{% endblock %}
+
+{% block content %}
+<style type="text/css">
+.warning {
+  background-color: #ffffcc;
+  border-left: 6px solid #ffeb3b;
+} 
+
+#table-scroll {
+  height:350px;
+  overflow:auto;  
+}
+
+#table-scroll1 {
+  height:550px;
+  overflow:auto;  
+}
+
+
+</style>
+
+<script type="text/javascript">
+
+
+function myFunction() {
+  document.getElementById("form-upload").reset();
+}
+
+ 
+</script>
+
+<section class="content-wrapper">
+  <div class="content-header">
+<div class="container">
+<div class="row mb-2">
+<div class="col-sm-6">
+<h4 class="m-0"> Upload Koleksi DVD Film </h4>
+</div>
+
+
+
+</div>
+</div>
+</div>
+
+  <div class="content">
+  <div class="container">
+<div class="col-12">
+<div class="card card-primary card-outline">
+<div class="card-header">
+<h5 class="card-title m-0">Detail Upload Koleksi Film</h5>
+</div>
+<div class="card-body">
+  <form id="form-upload" enctype="multipart/form-data">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+
+          <div class="card-body">
+            <div class="form-group row">
+              <div class="col-sm-9">
+                <button class="btn btn-primary btn-sm" type="button" onclick="fileupload()">Template upload Koleksi Film by CSV</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+      
+      <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title m-0">Store</h5>
+        </div>
+       
+        <div class="card-body">
+
+          <div class="form-group row">
+            <div class="col-sm-12">
+              <div class="input-group">
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" id="file_upload" name="file_upload">
+                  <label class="custom-file-label" for="file_upload">Choose file</label>
+                </div>
+                <div class="input-group-append">
+                  <span class="input-group-text" name="action" value="Upload Store" onclick="uploadstore(this);">Upload Koleksi Film</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+   
+          <div class="card">
+            <div class="table-responsive">
+              <div id="table-scroll">
+                <table class="table table-striped" id="table-1">
+                <thead>
+                  
+                  <tr>
+                    <th class="text-center">
+                      <div class="custom-checkbox custom-control">
+                        <input type="checkbox" data-checkboxes="mygroup" data-checkbox-role="dad" class="custom-control-input" id="checkbox-all">
+                        <label for="checkbox-all" class="custom-control-label">&nbsp;</label>
+                      </div>
+                    </th>
+                    <th>Judul Film </th>
+                    <th>Category </th>
+                    <th>Rating </th>
+                    <th>Kualitas Gambar </th>
+                    <th>Deskripsi Singkat </th>
+                    <th>Stock DVD</th>
+
+                  </tr>
+
+
+                </thead>
+                <tbody id="tbody_upload_film" >
+
+                </tbody>
+                </table>
+              
+              </div>
+              
+            </div>
+          </div>
+
+          <br>
+          <input class="btn btn-warning btn-sm" type="button" id="deletestore" style="float: right;" value="Delete">  
+
+        </div>
+      </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          
+
+          <div class="card-body">
+
+            <button type="button" class="btn btn-success" style="float: right;" onclick="simpan();">Simpan</button>
+           
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+
+
+  </form>
+
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<div class="modal fade" id="modal-success" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-success">
+        <h4 class="modal-title">Response</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBodySuccess">
+        <p id="content-success"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btn-close-success" class="btn btn-outline-success" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="modal-danger" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h4 class="modal-title">Peringatan</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBodyDanger">
+        <p id="content-danger"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btn-close-danger" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+
+
+<script type="text/javascript">
+
+$(function () {
+  bsCustomFileInput.init();
+});
+
+function alertSuccess(pesan){
+  $("#modalBodySuccess #content-success").html(pesan);
+  $('#modal-success').modal('show');
+}
+
+function alertWarning(pesan){
+  $("#modalBodyDanger #content-danger").html(pesan);
+  $('#modal-danger').modal('show');
+}
+
+function fileupload()
+{
+  document.location = "{{ url_for('static', filename='file/file_excel.zip')}} ";
+}
+
+function uploadstore(obj) {
+  var form_data = new FormData();
+  file = $('#file_upload').prop('files')[0];
+  form_data.append("file_upload", file);
+
+  console.log(file);
+
+  $.ajax({
+    dataType: 'json', 
+    cache: false,
+    contentType: false,
+    processData: false,
+    type: "POST",
+    url: "{{ url_for ('upload.upload_dvd') }}",
+    data: form_data,
+    success: function(data){
+      console.log(data);
+      html = '';
+      for (let idx = 0; idx < data['result'].length; idx++) {
+          html += "<tr>";
+          html += "<td>";
+          html += '<div class="custom-checkbox custom-control">';
+          html += '<input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="'+idx+'" >';
+          html += '<label for="'+idx+'" class="custom-control-label">&nbsp;</label>';
+          html += '</div>';
+          html += "</td>";
+          html += "<td>" + data.result[idx].judul_film+"</td>";
+          html += "<td>" + data.result[idx].category +"</td>";
+          html += "<td>" + data.result[idx].rating+"</td>";
+          html += "<td>" + data.result[idx].kualitas +"</td>";
+          html += "<td>" + data.result[idx].descp +"</td>";
+          html += "<td>" + data.result[idx].stock +"</td>";
+          html += "</tr>";
+      }
+      $("#tbody_upload_film").html(html);
+    },
+    error: function(){
+      messageAlert('500! Internal Server Error.');
+    }
+  });
+}
+
+$(document).ready(function() {
+  $('[id="deletestore"]').on('click', function() {
+    $('td input:checked').closest('tr').remove();
+  });
+
+
+});
+
+
+function simpan(){
+  let listTempData = [];
+  $('#tbody_upload_film tr').each(function() {
+      let arrayItem = {};
+      let value = $(this).closest('tr');
+      arrayItem['judul_film'] = value.find('td:eq(1)').text();
+      arrayItem['category'] = value.find('td:eq(2)').text();
+      arrayItem['rating'] = value.find('td:eq(3)').text();
+      arrayItem['kualitas'] = value.find('td:eq(4)').text();
+      arrayItem['descp'] = value.find('td:eq(5)').text();
+      arrayItem['stock'] = value.find('td:eq(6)').text();
+      listTempData.push(arrayItem);
+  });
+
+
+  $.ajax({
+      type: 'POST',
+      url: "{{ url_for('upload.proses_simpan') }}",
+      data: {
+              'dataUpload': JSON.stringify(listTempData) 
+
+          },
+      dataType: 'json',
+      success: function(data) {
+          if (data.status == "T") {
+            alertSuccess(data.message);
+            $("#btn-close-success").on("click", function(){
+              document.location.reload();
+            });
+
+          }else{
+            alertWarning(data.message);
+            $("#btn-close-danger").on("click", function(){
+              document.location.reload();
+            });
+          }
+      },
+      error: function (e) {
+          document.location.reload();
+          alert('Internal server eror');
+      }
+  });
+}
+
+  
+</script> 
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+<script src="{{ url_for('static', filename='plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/scripts.js')}}"></script>
+<script src="{{ url_for('static', filename='assets/js/custom.js')}}"></script>
+
+<script src="{{ url_for('static', filename='assets/js/page/modules-datatables.js')}}"></script>
+
+
+
+{% endblock content %}

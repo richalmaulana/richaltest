@@ -1,0 +1,123 @@
+<html style="height: auto;" class="" lang="en">
+<head>
+  {% block head %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+  <title>Andrew DVD Rental Store Online</title>
+
+  <link rel="icon" type="image/gif" href="{{ url_for('static', filename='assets/logo.png') }}"/> 
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='plugins/fontawesome-free/css/all.min.css') }}">
+  
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/adminlte.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='plugins/select2/css/select2.min.css') }}">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!--datatable-->
+  <link rel="stylesheet" href="{{ url_for('static', filename='plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+
+
+  <script src="{{ url_for('static', filename='plugins/jquery/jquery.min.js') }}"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='plugins/jquery-ui/jquery-ui.min.css')}}">
+  <script src="{{ url_for('static', filename='plugins/jquery-ui/jquery-ui.min.js')}}"></script> 
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  {% endblock %}
+  <style>
+    .dropdown-menu.show{right:0;}
+    
+  </style>
+  
+
+</head>
+
+<body class="layout-top-nav" style="height: auto;">
+<div class="wrapper">
+
+<nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
+<div class="container">
+<a>
+  <img alt="image"src="{{ url_for('static', filename='assets/logo.png')}}" width="115" height="50">
+</a>
+<button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+<span class="navbar-toggler-icon"></span>
+</button>
+
+<div class="collapse navbar-collapse order-3" id="navbarCollapse">
+
+<ul class="navbar-nav">
+<li class="nav-item">
+  <a href="/home" class="nav-link"><span>Home</span></a>
+</li>
+{% if current_user.role == 'sys'%}
+<li class="nav-item">
+  <a href="/upload" class="nav-link"><span>Upload Koleksi Film</span></a>
+</li>
+<li class="nav-item">
+  <a href="/approval" class="nav-link"><span>Persetujuan</span></a>
+</li>
+<li class="nav-item">
+  <a href="/report" class="nav-link"><span>Report</span></a>
+</li>
+{% endif %}
+{% if current_user.role == 'CUS'%}
+<li class="nav-item">
+  <a href="/history" class="nav-link"><span>History Peminjaman</span></a>
+</li>
+{% endif %}
+<li class="nav-item">
+  <a href="/logout" class="nav-link"><span>Logout</span></a>
+</li>
+
+
+</ul>
+
+
+</div>
+</div>
+</nav>
+
+
+
+
+<div class="main-content">
+  <section class="section">
+    {% block content %}
+   
+    {% endblock %}
+  </section>
+</div>
+
+
+
+
+
+<footer class="main-footer">
+
+<strong>Copyright Richal Maulana &copy; 2022 </strong> All rights reserved.
+</footer>
+</div>
+
+
+
+<script src="{{ url_for('static', filename='plugins/jquery/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+<!-- Bootstrap -->
+<script src="{{ url_for('static', filename='plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<!-- overlayScrollbars -->
+<script src="{{ url_for('static', filename='plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
+<!-- AdminLTE App -->
+<script src="{{ url_for('static', filename='dist/js/adminlte.min.js') }}"></script>
+<!-- OPTIONAL SCRIPTS -->
+<script src="{{ url_for('static', filename='plugins/chart.js/Chart.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/select2/js/select2.full.min.js') }}"></script>
+
+
+</body></html>

@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<section class="content-wrapper">
+  <div class="content-header">
+    <div class="container">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+        <h4 class="m-0"> List Koleksi Film </h4>
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="container">
+      <div class="col-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h5 class="card-title m-0">Detail List Koleksi Film</h5>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-striped" id="table-1">
+                <thead>
+                  <tr>
+                    
+                    <th>No.</th>
+                    <th>Judul Film </th>
+                    <th>Category </th>
+                    <th>Rating </th>
+                    <th>Kualitas Gambar </th>
+                    <th>Deskripsi Singkat </th>
+                    <th>Stock DVD</th>
+                    <th>Status Aktif</th>
+                    <th rowspan ="2">Proses</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for a in dataListFilm %}
+                  <tr>
+                    <td>{{loop.index}}</td>
+                    <td>{{ a.dtl_judul_film }}</td>
+                    <td>{{ a.dtl_category }}</td>
+                    <td>{{ a.dtl_rating }}</td>
+                    <td>{{ a.dtl_kualitas }}</td>
+                    <td>{{ a.dtl_descp }}</td>
+                    <td>{{ a.dtl_stock }}</td>
+                    <td>{{ a.dtl_status_aktif }}</td>
+                    <td>
+                      <input type = "hidden" class = "hid_id_dvd" value = "{{a.dtl_id_dvd}}" /> 
+                      <a href="javascript:void(0)" title="Lihat Detail" onclick="detail_film(this)">
+                      <i class="btn btn-success btn-xs">Detail</i>
+                      </a>
+                  
+                      <input type="hidden" class="hid_id_dvd" value="{{a.dtl_id_dvd}}" />
+                      <a href="javascript:void(0)" title="Hapus" onclick="hapus(this)">
+                      <i class="btn btn-danger btn-xs">Hapus</i>
+                      </a>  
+                    </td>
+                                     
+                  </tr>
+
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+          
+
+  </div>
+</section>
+
+
+<div class="modal fade" id="modal-success" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-success">
+        <h4 class="modal-title">Hapus Data</h4>
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+        <!-- <span aria-hidden="true">×</span> -->
+        </button>
+      </div>
+      <div class="modal-body" id="modalBodySuccess">
+        <p id="content-success"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btn-close-success" class="btn btn-outline-success" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="modal-danger" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h4 class="modal-title">Peringatan</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBodyDanger">
+        <p id="content-danger"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btn-close-danger" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<script type="text/javascript">
+
+  function alertSuccess(pesan){
+    $("#modalBodySuccess #content-success").html(pesan);
+    $('#modal-success').modal('show');
+  }
+
+  function alertWarning(pesan){
+    $("#modalBodyDanger #content-danger").html(pesan);
+    $('#modal-danger').modal('show');
+  }
+
+
+  function detail_film(obj)
+  {
+      let no_id = $(obj).siblings('.hid_id_dvd').val();
+      location = '/report/detail_update?n='+no_id;
+  }
+
+
+function hapus(obj)
+{
+  var no_id_film = $(obj).siblings('.hid_id_dvd').val();
+  if (confirm('Yakin Hapus ID Film : '+no_id_film+' ?')){
+    $.post('/report/hapus_film',{no_id_film : no_id_film},
+    function(data) 
+    {
+      if (data.status == "T") {
+        alertSuccess(data.message);
+        $("#btn-close-success").on("click", function(){
+          document.location.reload();
+        });
+        
+
+      }
+      else
+      {
+        alertWarning(data.message);
+        $("#btn-close-danger").on("click", function(){
+          document.location.reload();
+        });
+        // document.location.reload();
+      }
+    },)
+  }
+  return false;
+}
+
+
+
+    
+
+  
+  
+</script> 
+
+{% endblock content %}
